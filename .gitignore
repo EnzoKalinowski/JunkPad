@@ -4,9 +4,12 @@ dist/
 *.spec
 
 # Environnements Python
-__pycache__/
-*.pyc
-venv/
-.venv/
+python/__pycache__/
+python/*.pyc
+python/venv/
+python/.venv/
 
 .vscode/
+
+arduino/JunkPad/.pio/
+arduino/JunkPad/.vscode/
