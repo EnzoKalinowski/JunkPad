@@ -1,7 +1,7 @@
 # PyInstaller
-build/
-dist/
-*.spec
+python/build/
+python/dist/
+python/*.spec
 
 # Environnements Python
 python/__pycache__/
