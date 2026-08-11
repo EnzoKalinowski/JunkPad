@@ -17,9 +17,9 @@ void loop()
   {
     if (buttonState13 == 0)
     {
-      Serial.println("MACRO_1_OFF");
+      Serial.println("BUTTON_1_OFF");
       buttonState13 = 1;
-      delay(50);
+      delay(100);
     }
 
   }
@@ -29,9 +29,9 @@ void loop()
     {
       if (buttonState13 == 1)
       {
-        Serial.println("MACRO_1_ON");
+        Serial.println("BUTTON_1_ON");
         buttonState13 = 0;
-        delay(50);
+        delay(100);
       }
 
     }
