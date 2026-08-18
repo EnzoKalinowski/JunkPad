@@ -1,2 +1,4 @@
 pyserial
-pyautogui
+pycaw
+keyboard
+obs-websocket-py

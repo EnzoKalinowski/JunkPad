@@ -2,7 +2,7 @@
 
 // put function declarations here:
 
-int buttonState13 = 0;
+bool buttonState13 = false;
 void setup()
 {
   // put your setup code here, to run once:
@@ -15,10 +15,10 @@ void loop()
   // put your main code here, to run repeatedly:
   if (digitalRead(13) == LOW)
   {
-    if (buttonState13 == 0)
+    if (buttonState13 == false)
     {
-      Serial.println("BUTTON_1_OFF");
-      buttonState13 = 1;
+      Serial.println("BTN_1_OFF");
+      buttonState13 = true;
       delay(100);
     }
 
@@ -27,10 +27,10 @@ void loop()
   {
     if (digitalRead(13) == HIGH)
     {
-      if (buttonState13 == 1)
+      if (buttonState13 == true)
       {
-        Serial.println("BUTTON_1_ON");
-        buttonState13 = 0;
+        Serial.println("BTN_1_ON");
+        buttonState13 = false;
         delay(100);
       }
 

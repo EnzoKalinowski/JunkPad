@@ -2,17 +2,18 @@
   "title": "Config 1",
   "config": [
     {
-      "name": "BUTTON_1",
-      "type": "locking_button",
+      "id": "BTN_1",
+      "label": "OBS Camera",
+      "button_type": "toggle_button",
       "actions": [
         {
           "is_on": true,
-          "type": "hotkey",
+          "action_type": "hotkey",
           "keys": ["win", "alt", "shift", "f12"]
         },
         {
           "is_on": false,
-          "type": "hotkey",
+          "action_type": "hotkey",
           "keys": ["win", "alt", "shift", "f11"]
         }
       ]
