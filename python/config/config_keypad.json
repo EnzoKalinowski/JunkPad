@@ -1,0 +1,160 @@
+{
+  "title": "keypad config",
+  "config": [
+    {
+      "id": "M0",
+      "label": "OBS Camera",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "shift", "f12"]
+        }
+      ]
+    },
+    {
+      "id": "M1",
+      "label": "Select Scene 1",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f1" ]
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "label": "Select Scene 2",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f2" ]
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "label": "Select Scene 3",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f3" ]
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "label": "Select Scene 4",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f4" ]
+        }
+      ]
+    },
+    {
+      "id": "M5",
+      "label": "Select Scene 5",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f5" ]
+        }
+      ]
+    },
+    {
+      "id": "M6",
+      "label": "Select Scene 6",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f6" ]
+        }
+      ]
+    },
+    {
+      "id": "M7",
+      "label": "Select Scene 7",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f7" ]
+        }
+      ]
+    },
+    {
+      "id": "M8",
+      "label": "Select Scene 8",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f8" ]
+        }
+      ]
+    },
+    {
+      "id": "M9",
+      "label": "Select Scene 9",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["win", "alt", "f9" ]
+        }
+      ]
+    },
+    {
+        "id":"UP",
+        "label":"Volume Up",
+        "button_type":"momentary",
+        "actions":[
+            {
+                "action_type":"hotkey",
+                "keys":["volume_up"]
+            }
+        ]
+    },
+    {
+        "id":"DOWN",
+        "label":"Volume Down",
+        "button_type":"momentary",
+        "actions":[
+            {
+                "action_type":"hotkey",
+                "keys":["volume_down"]
+            }
+        ]
+    },
+    {
+        "id":"R",
+        "label":"Mute Discord",
+        "button_type":"momentary",
+        "actions":[
+            {
+                "action_type":"hotkey",
+                "keys":["ctrl", "shift", "m"]
+            }
+        ]
+    },
+    {
+        "id":"HP",
+        "label": "Mute OBS",
+        "button_type":"momentary",
+        "actions":[
+            {
+                "action_type":"hotkey",
+                "keys":["ctrl", "shift", "h"]
+            }
+        ]
+    }
+
+  ]
+}

@@ -4,6 +4,9 @@
 const byte NB_ROWS = 6;
 const byte NB_COLS = 4;
 
+bool connected = false;
+
+
 char keys[NB_ROWS][NB_COLS] = {
     // 4    7    9    11
     {'D', 'U', 'a', 'H'}, // 2
@@ -38,14 +41,28 @@ void setup()
 
 void loop()
 { 
-  char code = keyboard.getKey();
 
-  if (code != NO_KEY)
+  if (!connected)
   {
-    // Serial.print("code: ");
-    // Serial.println(code);
-    // Serial.print("key: ");
-    Serial.println(keyNames(code));
+    String cmd = Serial.readStringUntil('\n');
+    if (cmd == "ID_REQUEST")
+    {
+      Serial.println("JUNKPAD");
+      delay(100);
+    }
+    connected = true;
+  }
+  else
+  {
+    char code = keyboard.getKey();
+
+    if (code != NO_KEY)
+    {
+      // Serial.print("code: ");
+      // Serial.println(code);
+      // Serial.print("key: ");
+      Serial.println(keyNames(code));
+    }
   }
 
    // etat actuel (PRESSED, HOLD, RELEASED, IDLE)
