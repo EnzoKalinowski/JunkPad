@@ -11,12 +11,38 @@ import threading
 from obswebsocket import obsws, requests
 import subprocess
 import logging
+from serial.tools import list_ports
+
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 DEBUG = False
 RETRY_INTERVAL = 3  # seconds
+HANDSHAKE_QUERY = b"ID_REQUEST\n" 
+HANDSHAKE_EXPECTED = b"JUNKPAD"
+HANDSHAKE_TIMEOUT = 1.0
 
+def find_junkpad_port(baudrate: int) -> str | None:
+
+    logging.debug("[serial] scanning ports...")
+ 
+    for p in list_ports.comports():
+        logging.debug(f"[serial] checking port {p.device}...")
+        try:
+            with serial.Serial(p.device, baudrate, timeout=HANDSHAKE_TIMEOUT) as candidate:
+                time.sleep(2)  # let the board finish its reset-on-connect cycle
+                candidate.reset_input_buffer()
+                candidate.write(HANDSHAKE_QUERY)
+                reply = candidate.readline().strip()
+                logging.debug(f"[serial] received reply: {reply}")
+                if reply.startswith(HANDSHAKE_EXPECTED):
+                    logging.info(f"[serial] found Junkpad device on {p.device}")
+                    return p.device
+        except serial.SerialException:
+            logging.debug(f"[serial] failed to communicate with {p.device}")
+            continue  # port busy or unreadable, skip it
+ 
+    return None
 
 def connect_serial(port: str, baudrate: int) -> serial.Serial:
     first_attempt = True
@@ -105,13 +131,20 @@ def set_volume(level):
 
 
 
-def main (port:str='COM5', baudrate:int=9600):
+def main (port:str='AUTO', baudrate:int=9600):
+
+    if port == 'AUTO':
+        port = find_junkpad_port(baudrate)
+        if not port:
+            logging.error("No Junkpad device found.")
+            return
+    
     logging.info("Loading configuration...")
     config = read_config('./config/config_1.json')
     macros = load_macros_from_config(config)
 
     ser = connect_serial(port, baudrate)
-    init_obs_websocket('localhost', 4455, 'password')  # Adjust host, port, and password as needed
+    #init_obs_websocket('localhost', 4455, 'password')  # Adjust host, port, and password as needed
     init_audio()
 
     try:

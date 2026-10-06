@@ -1,39 +1,65 @@
 #include <Arduino.h>
 
 // put function declarations here:
+bool connected = false;
+bool buttonState2 = false;
 
-bool buttonState13 = false;
+
 void setup()
 {
   // put your setup code here, to run once:
+  pinMode(3, INPUT_PULLUP);
+  pinMode(2, INPUT_PULLUP);
   Serial.begin(9600);
-  pinMode(13, INPUT_PULLUP);
+  
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-  if (digitalRead(13) == LOW)
+
+  if (!connected)
   {
-    if (buttonState13 == false)
+    String cmd = Serial.readStringUntil('\n');
+    if (cmd == "ID_REQUEST")
     {
-      Serial.println("BTN_1_OFF");
-      buttonState13 = true;
+      Serial.println("JUNKPAD");
       delay(100);
     }
-
+    connected = true;
   }
   else
   {
-    if (digitalRead(13) == HIGH)
+
+    // put your main code here, to run repeatedly:
+    if (digitalRead(3) == HIGH)
     {
-      if (buttonState13 == true)
+      Serial.println("BTN_2_ON");
+      delay(100);
+    }
+    else{
+      Serial.println("BTN_2_OFF");
+      delay(100);
+    }
+    if (digitalRead(2) == LOW)
+    {
+      if (buttonState2 == false)
       {
-        Serial.println("BTN_1_ON");
-        buttonState13 = false;
+        Serial.println("BTN_1_OFF");
+        buttonState2 = true;
         delay(100);
       }
-
+    }
+    else
+    {
+      if (digitalRead(2) == HIGH)
+      {
+        if (buttonState2 == true)
+        {
+          Serial.println("BTN_1_ON");
+          buttonState2 = false;
+          delay(100);
+        }
+      }
     }
   }
 }
