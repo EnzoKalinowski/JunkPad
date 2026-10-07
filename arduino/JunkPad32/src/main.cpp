@@ -4,8 +4,14 @@
 const byte NB_ROWS = 6;
 const byte NB_COLS = 4;
 
-bool connected = false;
+const byte NB_LEDS = 3;
 
+byte ledPins[NB_LEDS] = {D11, D12, D14};
+byte ledMode[NB_LEDS]={2,0,0};//0:off, 1:on, 2:blink
+
+
+bool connected = false;
+String rxLine = "";
 
 char keys[NB_ROWS][NB_COLS] = {
     // 4    7    9    11
@@ -18,8 +24,6 @@ char keys[NB_ROWS][NB_COLS] = {
 
 };
 
-byte ledPins[3] = {D11, D12, D14};
-
 byte rowPins[NB_ROWS] = {A1, D2, D4, D5, D7, D9};
 byte colPins[NB_COLS] = {D3, D6, D8, D10};
 
@@ -29,6 +33,9 @@ Keypad keyboard = Keypad(makeKeymap(keys), rowPins, colPins, NB_ROWS, NB_COLS);
 // functions
 
 String keyNames(char code);
+void applyLed(byte i);
+void processCommand(String cmd);
+void readSerial();
 
 void setup()
 {
@@ -36,51 +43,67 @@ void setup()
   delay(2000);          // laisse le temps d'ouvrir le moniteur
   keyboard.setDebounceTime(20);
 
-  Serial.println("setup");
+   for (byte i = 0; i < NB_LEDS; i++) // initialise les LED
+  {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], HIGH);            // éteinte au démarrage
+  }
 }
 
 void loop()
 { 
+ 
+  readSerial();
+  char code = keyboard.getKey();
 
-  if (!connected)
+  if (code != NO_KEY)
   {
-    String cmd = Serial.readStringUntil('\n');
-    if (cmd == "ID_REQUEST")
-    {
-      Serial.println("JUNKPAD");
-      delay(100);
-    }
-    connected = true;
-  }
-  else
-  {
-    char code = keyboard.getKey();
-
-    if (code != NO_KEY)
-    {
-      // Serial.print("code: ");
-      // Serial.println(code);
-      // Serial.print("key: ");
-      Serial.println(keyNames(code));
-    }
+    String name = keyNames(code);
+    if (name != "UNKNOWN") Serial.println(name);
   }
 
-   // etat actuel (PRESSED, HOLD, RELEASED, IDLE)
-  // static KeyState last = IDLE;
-  // KeyState s = keyboard.getState();
-  // if (s != last)
-  // {
-  //   last = s;
-  //   Serial.print("etat: ");
-  //   switch (s)
-  //   {
-  //   case IDLE:     Serial.println("IDLE");     break;
-  //   case PRESSED:  Serial.println("PRESSED");  break;
-  //   case HOLD:     Serial.println("HOLD");     break;
-  //   case RELEASED: Serial.println("RELEASED"); break;
-  //   }
-  // }
+   for (byte i = 0; i < NB_LEDS; i++) applyLed(i);
+  
 
+}
+
+void applyLed(byte i)
+{
+  bool on = (ledMode[i] == 1) ||
+            (ledMode[i] == 2 && (millis() / 300) % 2 == 0);
+  digitalWrite(ledPins[i], on ? LOW : HIGH);   // anode commune : LOW = allumé
+}
+
+void processCommand(String cmd)
+{
+  if (cmd == "ID_REQUEST")
+  {
+    Serial.println("JUNKPAD");
+  }
+  else if (cmd.startsWith("LED") && cmd.length() >= 6 && cmd.charAt(4) == ':')
+  {
+    int idx = cmd.charAt(3) - '1';             // LED1 -> 0, LED2 -> 1...
+    int val = cmd.substring(5).toInt();
+    if (idx >= 0 && idx < NB_LEDS && val >= 0 && val <= 2)
+      ledMode[idx] = val;
+  }
+}
+void readSerial()
+{
+  while (Serial.available())
+  {
+    char c = Serial.read();
+    if (c == '\n')
+    {
+      rxLine.trim();
+      processCommand(rxLine);
+      rxLine = "";
+    }
+    else if (c != '\r' && rxLine.length() < 32)
+    {
+      rxLine += c;
+    }
+  }
 }
 
 String keyNames(char code)

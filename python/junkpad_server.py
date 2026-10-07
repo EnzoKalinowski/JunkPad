@@ -22,6 +22,31 @@ HANDSHAKE_QUERY = b"ID_REQUEST\n"
 HANDSHAKE_EXPECTED = b"JUNKPAD"
 HANDSHAKE_TIMEOUT = 1.0
 
+
+ser = None
+led_states = {}
+
+def set_led(led, mode):
+    logging.debug(f"[led] set_led({led!r}, {mode!r}) ser={ser}")
+    if not led or ser is None:
+        return
+    if mode == 'toggle':
+        value = 0 if led_states.get(led, 0) else 1
+    else:
+        value = {'off': 0, 'on': 1, 'blink': 2}.get(mode)
+        if value is None:
+            logging.warning(f"[led] unknown mode: {mode}")
+            return
+    led_states[led] = value
+    try:
+        ser.write(f"{led}:{value}\n".encode())
+    except serial.SerialException:
+        logging.warning("[led] write failed")
+
+def resend_led_states():
+    for led, value in led_states.items():
+        ser.write(f"{led}:{value}\n".encode())
+
 def find_junkpad_port(baudrate: int) -> str | None:
 
     logging.debug("[serial] scanning ports...")
@@ -132,7 +157,7 @@ def set_volume(level):
 
 
 def main (port:str='AUTO', baudrate:int=9600):
-
+    global ser
     if port == 'AUTO':
         port = find_junkpad_port(baudrate)
         if not port:
@@ -140,10 +165,12 @@ def main (port:str='AUTO', baudrate:int=9600):
             return
     
     logging.info("Loading configuration...")
-    config = read_config('./config/config_1.json')
+    config = read_config('./config/config_keypad.json')
     macros = load_macros_from_config(config)
 
     ser = connect_serial(port, baudrate)
+    connected_led = config.get('status_leds', {}).get('connected')
+    set_led(connected_led, 'on')
     #init_obs_websocket('localhost', 4455, 'password')  # Adjust host, port, and password as needed
     init_audio()
 
@@ -158,6 +185,8 @@ def main (port:str='AUTO', baudrate:int=9600):
                 logging.warning(f"[serial] lost connection on {port}, attempting to reconnect...")
                 ser.close()
                 ser = connect_serial(port, baudrate)
+                set_led(connected_led, 'on')
+                resend_led_states()
                 continue
 
             if not data:
@@ -185,6 +214,9 @@ def main (port:str='AUTO', baudrate:int=9600):
                             logging.warning(f"Unknown OBS request: {action['request']}")
                     elif atype == 'analog_control':
                         run_analog_control(action, int(payload))
+                    elif atype == 'led':
+                        set_led(action['led'], action.get('mode', 'toggle'))
+                        logging.debug(f"[led] set {action['led']} to {action.get('mode', 'toggle')}")
                     else:
                         logging.debug(f"Unknown action type: {atype}")
 
@@ -194,6 +226,7 @@ def main (port:str='AUTO', baudrate:int=9600):
     finally:
         logging.info("Cleaning up...")
         obsws_client.disconnect()
+        set_led(connected_led, 'off')
         ser.close()
 
 

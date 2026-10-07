@@ -1,14 +1,15 @@
 {
   "title": "keypad config",
+  "status_leds": { "connected": "LED1" },
   "config": [
     {
       "id": "M0",
-      "label": "OBS Camera",
+      "label": "Play/Pause Media",
       "button_type": "momentary",
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "shift", "f12"]
+          "keys": ["play/pause media"]
         }
       ]
     },
@@ -19,7 +20,7 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f1" ]
+          "keys": ["f23"]
         }
       ]
     },
@@ -30,7 +31,7 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f2" ]
+          "keys": ["f22"]
         }
       ]
     },
@@ -41,7 +42,7 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f3" ]
+          "keys": ["f21"]
         }
       ]
     },
@@ -52,7 +53,7 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f4" ]
+          "keys": ["f20"]
         }
       ]
     },
@@ -63,7 +64,7 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f5" ]
+          "keys": ["f19"]
         }
       ]
     },
@@ -74,7 +75,7 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f6" ]
+          "keys": ["f18"]
         }
       ]
     },
@@ -85,7 +86,7 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f7" ]
+          "keys": ["f17"]
         }
       ]
     },
@@ -96,65 +97,69 @@
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f8" ]
+          "keys": ["f16"]
         }
       ]
     },
     {
       "id": "M9",
-      "label": "Select Scene 9",
+      "label": "OBS Camera",
       "button_type": "momentary",
       "actions": [
         {
           "action_type": "hotkey",
-          "keys": ["win", "alt", "f9" ]
+          "keys": ["f15"]
         }
       ]
     },
     {
-        "id":"UP",
-        "label":"Volume Up",
-        "button_type":"momentary",
-        "actions":[
-            {
-                "action_type":"hotkey",
-                "keys":["volume_up"]
-            }
-        ]
+      "id": "UP",
+      "label": "Volume Up",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["volume_up"]
+        }
+      ]
     },
     {
-        "id":"DOWN",
-        "label":"Volume Down",
-        "button_type":"momentary",
-        "actions":[
-            {
-                "action_type":"hotkey",
-                "keys":["volume_down"]
-            }
-        ]
+      "id": "DOWN",
+      "label": "Volume Down",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["volume_down"]
+        }
+      ]
     },
     {
-        "id":"R",
-        "label":"Mute Discord",
-        "button_type":"momentary",
-        "actions":[
-            {
-                "action_type":"hotkey",
-                "keys":["ctrl", "shift", "m"]
-            }
-        ]
+      "id": "R",
+      "label": "Mute Discord",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["f14"]
+        }
+      ]
     },
     {
-        "id":"HP",
-        "label": "Mute OBS",
-        "button_type":"momentary",
-        "actions":[
-            {
-                "action_type":"hotkey",
-                "keys":["ctrl", "shift", "h"]
-            }
-        ]
+      "id": "HP",
+      "label": "Mute OBS",
+      "button_type": "momentary",
+      "actions": [
+        {
+          "action_type": "hotkey",
+          "keys": ["f13"]
+        },
+        {
+          "action_type": "led",
+          "led": "LED2",
+          "mode": "toggle"
+        }
+      ]
     }
-
   ]
 }
