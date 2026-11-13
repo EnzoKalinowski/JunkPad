@@ -13,3 +13,5 @@ python/.venv/
 
 arduino/JunkPad/.pio/
 arduino/JunkPad/.vscode/
+python/run_junkpad_server.vbs
+arduino/JunkPad32/ledTest.cpp

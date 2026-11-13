@@ -1,6 +1,6 @@
 {
   "title": "keypad config",
-  "status_leds": { "connected": "LED1" },
+  "status_leds": { "connected": "LED2" },
   "config": [
     {
       "id": "M0",
@@ -156,7 +156,7 @@
         },
         {
           "action_type": "led",
-          "led": "LED2",
+          "led": "LED3",
           "mode": "toggle"
         }
       ]

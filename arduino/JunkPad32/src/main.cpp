@@ -7,7 +7,7 @@ const byte NB_COLS = 4;
 const byte NB_LEDS = 3;
 
 byte ledPins[NB_LEDS] = {D11, D12, D14};
-byte ledMode[NB_LEDS]={2,0,0};//0:off, 1:on, 2:blink
+byte ledMode[NB_LEDS]={0,2,0};//0:off, 1:on, 2:blink
 
 
 bool connected = false;
@@ -48,6 +48,8 @@ void setup()
     pinMode(ledPins[i], OUTPUT);
     digitalWrite(ledPins[i], HIGH);            // éteinte au démarrage
   }
+    Serial.println("setup done");
+
 }
 
 void loop()
@@ -62,9 +64,14 @@ void loop()
     if (name != "UNKNOWN") Serial.println(name);
   }
 
-   for (byte i = 0; i < NB_LEDS; i++) applyLed(i);
-  
+  for (byte i = 0; i < NB_LEDS; i++){
+    applyLed(i); 
+    Serial.println(ledMode[i]);
+  } 
 
+  Serial.println("loop done");
+  
+  delay(100); // pour ne pas saturer le moniteur série
 }
 
 void applyLed(byte i)
